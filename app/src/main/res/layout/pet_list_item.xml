@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:elevation="4dp"
+    android:maxHeight="150dp"
+    app:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintHeight_max="200dp">
+
+            <ImageView
+                android:id="@+id/pet_item_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description_pet_image"
+                android:maxHeight="100dp"
+                android:scaleType="fitCenter"
+                android:transitionName="@string/transition_name"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/hosico" />
+
+            <TextView
+                android:id="@+id/pet_item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:textColor="@android:color/white"
+                android:background="#999E9E9E"
+                android:textSize="24sp"
+                android:padding="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/pet_item_image"
+                tools:text="Hosico" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/pet_item_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:drawableStart="@drawable/location_icon"
+            android:textSize="18sp"
+            tools:text="Bucuresti" />
+
+
+        <TextView
+            android:id="@+id/pet_item_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/date_icon"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            tools:text="12.12.2012" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

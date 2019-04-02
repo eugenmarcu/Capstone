@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_home"
+        android:title="Pets list"
+        android:enabled="true"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/action_add_pet"
+        android:title="Add pet"
+        android:enabled="true"
+        android:icon="@drawable/add"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/action_my_pets"
+        android:title="My pet"
+        android:enabled="true"
+        android:icon="@drawable/ic_home_black_24dp"
+        app:showAsAction="ifRoom"
+        />
+
+</menu>

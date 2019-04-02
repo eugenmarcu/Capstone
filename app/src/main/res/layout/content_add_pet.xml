@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/pet_detail_image"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/choose_pet_image"
+        android:src="@drawable/add_photo_icon"/>
+
+    <include layout="@layout/details_main"/>
+
+    <include layout="@layout/content_phone_email"/>
+
+</LinearLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nestedScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/pet_add_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_add_pet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/content_add_pet" />
+
+            <Button
+                android:id="@+id/pet_detail_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_green_dark"
+                android:text="@string/save" />
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/save_layout"
+            layout="@layout/content_successful_save"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/empty"
+            android:visibility="invisible"
+            android:contentDescription="@string/empty_view"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+
+
+</android.support.v4.widget.NestedScrollView>
