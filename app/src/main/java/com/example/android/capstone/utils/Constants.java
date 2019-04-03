@@ -22,6 +22,8 @@ public final class Constants {
     public final static String LOCATION_LONGITUDE = "LOCATION_LONGITUDE";
     public final static String LOCATION_LATITUDE = "LOCATION_LATITUDE";
     public final static String CURRENT_PET = "CURRENT_PET";
+    public final static String PET_LIST = "PET_LIST";
+    public final static String LAYOUT_MANAGER_SATE = "LAYOUT_MANAGER_STATE";
     public final static int EDIT_REQUEST_CODE = 300;
     public static final int RC_PHOTO_PICKER = 2;
     public static final int MAX_PETS = 20;

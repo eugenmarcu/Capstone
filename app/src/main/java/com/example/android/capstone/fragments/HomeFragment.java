@@ -3,6 +3,7 @@ package com.example.android.capstone.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -27,7 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment implements PetAdapter.ItemClickListen
     private Query query;
     private ValueEventListener mEventListener;
 
-    private List<Pet> petList;
+    private ArrayList<Pet> petList;
     @BindView(R.id.list_rv)
     RecyclerView petRecyclerView;
     private PetAdapter petAdapter;
@@ -52,12 +52,12 @@ public class HomeFragment extends Fragment implements PetAdapter.ItemClickListen
     ImageView emptyView;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    private StaggeredGridLayoutManager layoutManager;
 
     private Unbinder unbinder;
 
     public HomeFragment() {
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,17 +78,33 @@ public class HomeFragment extends Fragment implements PetAdapter.ItemClickListen
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mPetsDatabaseReference = mFirebaseDatabase.getReference().child(PETS);
         query = mPetsDatabaseReference.orderByChild(TIMESTAMP).limitToLast(MAX_PETS);
-        attachDatabaseReadListener();
 
         int numberOfColumns = getColumnsNumByOrientation(mContext);
-        petList = new ArrayList<>();
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(numberOfColumns, 1);
+        if (savedInstanceState == null) petList = new ArrayList<>();
+        else petList = savedInstanceState.getParcelableArrayList(PET_LIST);
+        layoutManager = new StaggeredGridLayoutManager(numberOfColumns, 1);
         petRecyclerView.setLayoutManager(layoutManager);
         petAdapter = new PetAdapter(mContext, petList);
         petAdapter.setClickListener(this);
         petRecyclerView.setAdapter(petAdapter);
 
-        progressBar.setVisibility(View.VISIBLE);
+        if (savedInstanceState != null) {
+            final StaggeredGridLayoutManager.SavedState mLayoutManagerState = savedInstanceState.getParcelable(LAYOUT_MANAGER_SATE);
+            /*
+             * It looks like the RecyclerView keeps going back to initial state
+             * because the data in Adapter still being populated when we call the onRestoreInstanceState
+             * so we need a little delay
+             */
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    petRecyclerView.getLayoutManager().onRestoreInstanceState(mLayoutManagerState);
+                }
+            }, 300);
+        } else {
+            attachDatabaseReadListener();
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -139,6 +155,13 @@ public class HomeFragment extends Fragment implements PetAdapter.ItemClickListen
             query.removeEventListener(mEventListener);
             mEventListener = null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(LAYOUT_MANAGER_SATE, layoutManager.onSaveInstanceState());
+        outState.putParcelableArrayList(PET_LIST, petList);
     }
 
     @Override

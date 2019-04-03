@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +28,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +44,7 @@ public class MyPetsFragment extends Fragment implements PetAdapter.ItemClickList
     private ValueEventListener valueEventListener;
     private Query query;
 
-    private List<Pet> petList;
+    private ArrayList<Pet> petList;
     @BindView(R.id.list_rv)
     RecyclerView petRecyclerView;
     private PetAdapter petAdapter;
@@ -51,6 +52,7 @@ public class MyPetsFragment extends Fragment implements PetAdapter.ItemClickList
     ImageView emptyView;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    RecyclerView.LayoutManager layoutManager;
 
     private String userName;
     private String userUid;
@@ -81,18 +83,30 @@ public class MyPetsFragment extends Fragment implements PetAdapter.ItemClickList
         //Initialize Firebase
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mPetsDatabaseReference = mFirebaseDatabase.getReference().child(PETS);
-        //query the data by user name
-        queryDataByUserName();
 
         int numberOfColumns = getColumnsNumByOrientation(mContext);
-        petList = new ArrayList<>();
+        if (savedInstanceState == null) petList = new ArrayList<>();
+        else petList = savedInstanceState.getParcelableArrayList(PET_LIST);
 
-        petRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(numberOfColumns, 1));
+        layoutManager = new StaggeredGridLayoutManager(numberOfColumns, 1);
+        petRecyclerView.setLayoutManager(layoutManager);
         petAdapter = new PetAdapter(mContext, petList);
         petAdapter.setClickListener(this);
         petRecyclerView.setAdapter(petAdapter);
 
-        progressBar.setVisibility(View.VISIBLE);
+        if (savedInstanceState != null) {
+            final StaggeredGridLayoutManager.SavedState mLayoutManagerState = savedInstanceState.getParcelable(LAYOUT_MANAGER_SATE);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    petRecyclerView.getLayoutManager().onRestoreInstanceState(mLayoutManagerState);
+                }
+            }, 300);
+        } else {
+            //query the data by user name
+            queryDataByUserName();
+            progressBar.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -146,5 +160,18 @@ public class MyPetsFragment extends Fragment implements PetAdapter.ItemClickList
             petAdapter.clearAll();
             queryDataByUserName();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(LAYOUT_MANAGER_SATE, layoutManager.onSaveInstanceState());
+        outState.putParcelableArrayList(PET_LIST, petList);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

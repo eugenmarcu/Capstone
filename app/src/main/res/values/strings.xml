@@ -44,5 +44,9 @@
     <string name="discard_changes">Discard changes and quid editing?</string>
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep editing</string>
+    <string name="pets_list">Pets list</string>
+    <string name="add_pet">Add pet</string>
+    <string name="sign_out">Sign out</string>
+    <string name="my_pet">My pet</string>
 
 </resources>
